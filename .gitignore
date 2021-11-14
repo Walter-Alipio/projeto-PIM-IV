@@ -1,5 +1,6 @@
 *.c 
-*[pr]
+*[0-9]
+*prototipe
 *.txt
 !prototipo05.c
 # Executables
