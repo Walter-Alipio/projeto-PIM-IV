@@ -1,4 +1,19 @@
-Prototipo_PIM/
+*.c 
+*.txt
 !prototipo05.c
-*.c .txt 
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
 
