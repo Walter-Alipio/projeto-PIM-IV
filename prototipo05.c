@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <string.h>
 #include <stdlib.h>
 #include <curses.h>
@@ -194,30 +195,35 @@ void main(){
     User log;
     int check=NULL, status;
     char response;
+    response = 'n';
 
-   printf("**************************************************\n");
-   printf("*Cadastro de paciente diagnosticados com COVID-19*\n");
-   printf("**************************************************\n");
+   printf("****************************************************\n");
+   printf("* Cadastro de paciente diagnosticados com COVID-19 *\n");
+   printf("****************************************************\n");
    printf("\n\n");
  
    do
     {
         printf("Digite seu Nome de usuário: ");
-        scanf("%s",&log.username);
+        scanf(" %s",&log.username);
         getchar();
+        __fpurge(stdin);
         printf("Digite sua senha: ");
-        scanf("%s",&log.password);
+        scanf(" %s",&log.password);
+        __fpurge(stdin);
         check=checkId(log);
         if (check == 0)
-        {
-            printf("Deseja tentar novamente?\n 'S' para tentar de novo ou outra tecla para sair: ");
-            scanf("%c",&response);
-            getchar();
-            //flush_in();
+        {          
+            printf("Deseja tentar novamente?\n'Sim' para tentar de novo ou outra tecla para sair: ");
+            response = getc(stdin);
+            __fpurge(stdin);         
+            
+            system("clear");
+        
         }else{
-           
+            
             break;
         }
     } while (response == 's' || response == 'S');
-    
+    printf(" Até a próxima!\n\n     =)\n\n\n");
 }
