@@ -43,21 +43,6 @@ void flush_in() {                  /* essa função deve limpar o buffer */
     } while (ch != EOF && ch != '\n');
 }
 
-
-int checkId (User nameId){
-    int validate;
-        if(strcmp(nameId.username,"Admin")==0 && strcmp(nameId.password,"Admin")==0){       //strcmp compara as duas strings
-           printf("\nOlá %s \n",nameId.username);   
-           system("clear");
-           patientRegister();
-            validate=1;         
-       }else {
-        printf("Erro! Nome ou senha inválido.");
-            validate=0;       
-       } 
-    return validate;
-}
-
 void saveRetister(char* comorbidity){
      Patient p;
 
@@ -78,7 +63,7 @@ void saveRetister(char* comorbidity){
         fprintf(storage,"%d/%d/%d\n",p.bDay,p.bMonth,p.bYear);
         fprintf(storage,"%s\n",p.diagnosticDate);
         fprintf(storage,"%s\n",p.patient.address1);
-        fprintf(storage,"%s\n",p.patient.number);
+        fprintf(storage,"%d\n",p.patient.number);
         fprintf(storage,"%s\n",p.patient.address2);
         fprintf(storage,"%s\n",p.patient.city);
         fprintf(storage,"%s\n",p.patient.state);
@@ -116,49 +101,61 @@ void riskGroup(Patient p, int option){
 void patientRegister(){
     Patient data;
     int nregister=0, option=0;
-    char comorbidity[20];
-
+    char *comorbidity = malloc(sizeof(char)*20);
     system("clear");
+    
     printf("Cadastro de paciente\n\n");
     printf("Nome do paciente: ");
     fgets(data.patientName,30,stdin);
-    flush_in();
-    getchar();
+    __fpurge(stdin); 
+   
     printf("Digite o CPF (Apenas os númeors): ");
-    scanf("%s",&data.patientCPF);
-    getchar();
+    fgets(data.patientCPF,12,stdin);
+    __fpurge(stdin); 
+
     printf("Email: ");
-    scanf("%s",&data.patientEmail);
-    getchar();
+    fgets(data.patientEmail,50,stdin);
+    __fpurge(stdin); 
+
     printf("Telefone: ");
-    scanf("%s",&data.patientPhone);
-    getchar();
+    fgets(data.patientPhone,30,stdin);
+    
     printf("Digite a data de nascimento dd/mm/aaaa: ");
     scanf("%d/%d/%d",&data.bDay,&data.bMonth,&data.bYear);
-    getchar();
+    __fpurge(stdin); 
+
     printf("Data do diagnóstico (dd/mm): ");
-    scanf("%s",&data.diagnosticDate);
-    getchar();
-    printf("Digite agora o Endereço\n");
+    fgets(data.diagnosticDate,12,stdin);
+    __fpurge(stdin); 
+
+    printf("Digite agora o Endereço\n\n");
+
     printf("Rua/Avenida: ");
     fgets(data.patient.address1, 50 , stdin);  
-    flush_in();
+    __fpurge(stdin); 
+
     printf("Numero: ");
     scanf("%d",&data.patient.number);  
+
     printf("Bairro: ");
     fgets(data.patient.address2, 50 , stdin);
     flush_in();
-    getchar();
+    __fpurge(stdin); 
+
     printf("Cidade: ");
-    scanf("%s",&data.patient.city);
+    fgets(data.patient.city,30,stdin);
+    __fpurge(stdin); 
+
     printf("Estado: ");
-    scanf("%s",&data.patient.state);
+    fgets(data.patient.state,30,stdin);
+    __fpurge(stdin); 
+
     printf("CEP: ");
-    scanf("%s",&data.patient.CEP);
+    fgets(data.patient.CEP,30,stdin);
     flush_in();
     printf("Possui comorbidade?\nNão - 0\nDiabetes -1\nObesidade - 2\nHipertenção - 3\nOutros - 4 :");
     scanf("%d",&option);
-    getchar();
+    __fpurge(stdin); 
 
     riskGroup(data,option); // Função que verifica e grava o cep e idade do paciente do Grupo de risco
 
@@ -184,11 +181,26 @@ void patientRegister(){
 
     printf("\nPara novo cadastro digite 1: ");
     scanf("%d",&nregister);
+    __fpurge(stdin); 
     if (nregister == 1)
     {
         patientRegister();
     }
-    return;
+    system("clear");
+}
+
+int checkId (User nameId){
+    int validate;
+        if(strcmp(nameId.username,"Admin")==0 && strcmp(nameId.password,"Admin")==0){       //strcmp compara as duas strings
+           printf("\nOlá %s \n",nameId.username);   
+           
+           patientRegister();
+            validate=1;         
+       }else {
+        printf("Erro! Nome ou senha inválido.");
+            validate=0;       
+       } 
+    return validate;
 }
 
 void main(){
@@ -205,11 +217,11 @@ void main(){
    do
     {
         printf("Digite seu Nome de usuário: ");
-        scanf(" %s",&log.username);
-        getchar();
+        scanf("%s",log.username);
+        
         __fpurge(stdin);
         printf("Digite sua senha: ");
-        scanf(" %s",&log.password);
+        scanf("%s",log.password);
         __fpurge(stdin);
         check=checkId(log);
         if (check == 0)
