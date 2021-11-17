@@ -43,7 +43,7 @@ void flush_in() {                  /* essa função deve limpar o buffer */
     } while (ch != EOF && ch != '\n');
 }
 
-void saveRetister(char* comorbidity){
+void saveRegister(char* comorbidity){
      Patient p;
 
      
@@ -69,7 +69,6 @@ void saveRetister(char* comorbidity){
         fprintf(storage,"%s\n",p.patient.state);
         fprintf(storage,"%s\n",p.patient.CEP);
         fprintf(storage,"%s\n",comorbidity);
-
         fclose(storage);
 }
 
@@ -91,7 +90,7 @@ void riskGroup(Patient p, int option){
     if(age >= 65 || option > 0){    //a variavel comorbidity não está funcionando
         FILE *storage;
         storage = fopen("grupoDerisco.txt","a");
-        fprintf(storage,"%s %d\n",p.patient.CEP,age); //grava o texto em um arquivo txt            
+        fprintf(storage,"CEP:%s Idade:%d\n",p.patient.CEP,age); //grava o texto em um arquivo txt            
         fclose(storage);
     }
 
@@ -176,8 +175,13 @@ void patientRegister(){
     default:
         break;
     }
+    printf("Nome:%s CPF:%s Email:%s Telefone:%s",data.patientName,data.patientCPF,data.patientEmail,data.patientPhone);
+    printf("\nData de nacimento:%d/%d/%d",data.bDay,data.bMonth,data.bYear);
+    printf("\nData diagnostico:%s\n",data.diagnosticDate);
+    printf("Endereço\n%s N:%d Bairro:%s",data.patient.address1,data.patient.number,data.patient.address2);
+    printf("Cidade:%s Estado:%s CEP:%s",data.patient.city,data.patient.state,data.patient.CEP);
 
-    saveRetister(comorbidity);
+    saveRegister(comorbidity);
 
     printf("\nPara novo cadastro digite 1: ");
     scanf("%d",&nregister);
@@ -192,8 +196,8 @@ void patientRegister(){
 int checkId (User nameId){
     int validate;
         if(strcmp(nameId.username,"Admin")==0 && strcmp(nameId.password,"Admin")==0){       //strcmp compara as duas strings
-           printf("\nOlá %s \n",nameId.username);   
-           
+           printf("Login com sucesso!\nTecle ENTER para continuar");   
+           flush_in();
            patientRegister();
             validate=1;         
        }else {
