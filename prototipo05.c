@@ -24,6 +24,7 @@ typedef struct login
     char patientPhone[30];
     int bDay,bMonth,bYear;
     char diagnosticDate[12];
+    char* comorbidity[30];
 
 
 void flush_in() {                  /* essa função deve limpar o buffer */
@@ -54,7 +55,8 @@ void saveRegister(char* comorbidity){
         fprintf(storage,"Telefone: %s\n",patientPhone);
         fprintf(storage,"Data de Nascimento: %d/%d/%d\n",bDay,bMonth,bYear);
         fprintf(storage,"Data diagnostico: %s\n",diagnosticDate);
-        fprintf(storage,"Rua/Avenida: %s n:%d Bairro:%s\n",address1,number,address2);
+        fprintf(storage,"Rua/Av: %s n:%d \n",address1,number);
+        fprintf(storage,"Bairro: %s \n",address2);
         fprintf(storage,"Cidade: %s Estado: %s Cep:%s\n",city,state,CEP);
         fprintf(storage,"Comorbidade:%s\n",comorbidity);
         fclose(storage);
@@ -75,7 +77,7 @@ void riskGroup(char*CEP, int option, int pbyear){
        age++;
     }
 
-    if(age >= 65 || option > 0){    //a variavel comorbidity não está funcionando
+    if(age >= 65 || option > 0){    
         FILE *storage;
         storage = fopen("grupoDerisco.txt","a");
         fprintf(storage,"CEP:%s Idade:%d\n",CEP,age); //grava o texto em um arquivo txt            
@@ -87,7 +89,7 @@ void riskGroup(char*CEP, int option, int pbyear){
 
 void patientRegister(){
     int nregister=0, option=0;
-    char *comorbidity = malloc(sizeof(char)*20);
+  
     system("clear");
     
     printf("Cadastro de paciente\n\n");
@@ -124,7 +126,7 @@ void patientRegister(){
     scanf("%d",&number);  
 
     printf("Bairro: ");
-    fgets(address2, 50 , stdin);
+    fgets(address2, 50 , stdin);  
     flush_in();
     __fpurge(stdin); 
 
@@ -138,7 +140,7 @@ void patientRegister(){
 
     printf("CEP: ");
     fgets(CEP,30,stdin);
-    flush_in();
+    //flush_in();
     printf("Possui comorbidade?\nNão - 0\nDiabetes -1\nObesidade - 2\nHipertenção - 3\nOutros - 4 :");
     scanf("%d",&option);
     __fpurge(stdin); 
@@ -163,9 +165,9 @@ void patientRegister(){
         break;
     }
 
-    saveRegister(comorbidity);
+    saveRegister(*comorbidity);
 
-    printf("\nPara novo cadastro digite 1: ");
+    printf("\nPara novo cadastro digite 1\nPara sair digite 0: ");
     scanf("%d",&nregister);
     __fpurge(stdin); 
     if (nregister == 1)
@@ -212,7 +214,7 @@ void main(){
         check=checkId(log);
         if (check == 0)
         {          
-            printf("Deseja tentar novamente?\n'Sim' para tentar de novo ou outra tecla para sair: ");
+            printf("Deseja tentar novamente?\n'S' para tentar de novo ou outra tecla para sair: ");
             response = getc(stdin);
             __fpurge(stdin);         
             
